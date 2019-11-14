@@ -51,7 +51,7 @@ class DoubleClickCrypto:
         if max_timedelta_seconds is not None:
             sec = int.from_bytes(iv[0:4], "big", signed=False)
             usec = int.from_bytes(iv[4:8], "big", signed=False)
-            timestamp = datetime.fromtimestamp(sec + usec / 1000)
+            timestamp = datetime.fromtimestamp(sec + usec / 1_000_000)
             timedelta = datetime.now() - timestamp
             if abs(timedelta.total_seconds()) > max_timedelta_seconds:
                 raise StaleResponseException("Time delta is too large")
