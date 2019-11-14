@@ -8,6 +8,9 @@
 pip install doubleclickcrypto
 ```
 
+## Features
+The module handles decryption of price confirmations with signature checking and stale response handling.
+
 ## Example usage
 Look at the test cases in the source for more examples.
 

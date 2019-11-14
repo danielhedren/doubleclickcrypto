@@ -5,12 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="doubleclickcrypto",
-    version="0.1",
+    version="0.1.1",
     author="Daniel Hedrén",
     author_email="danielhedren@gmail.com",
     description="Module for decrypting doubleclick price confirmations",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    keywords="google doubleclick hmac price confirmation winning bid decryption decrypt real time bidding rtb",
     url="https://github.com/danielhedren/doubleclickcrypto",
     packages=setuptools.find_packages(),
     classifiers=[
