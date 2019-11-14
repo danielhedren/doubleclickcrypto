@@ -27,3 +27,7 @@ DoubleClickCrypto.decrypt(enc, e_key, i_key)
 DoubleClickCrypto.decrypt(enc, e_key, i_key, max_timedelta_seconds=0)
 #  -> throws StaleResponseException
 ```
+
+## Repository
+
+https://github.com/danielhedren/doubleclickcrypto
