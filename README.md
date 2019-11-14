@@ -5,7 +5,7 @@
 
 ## Installation
 ```
-pip install git+https://github.com/danielhedren/doubleclickcrypto.git
+pip install doubleclickcrypto
 ```
 
 ## Example usage
