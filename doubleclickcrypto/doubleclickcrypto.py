@@ -85,14 +85,14 @@ class DoubleClickCrypto:
         return price
 
     @staticmethod
-    def decrypt_ad_id(cipher: bytes, e_key: Union[str, bytes], i_key: Union[str, bytes]) -> bytes:
+    def decrypt_ad_id(cipher: Union[str, bytes], e_key: Union[str, bytes], i_key: Union[str, bytes]) -> bytes:
         """
         Decrypts the advertising id bytes from a doubleclick cipher.
         https://developers.google.com/authorized-buyers/rtb/response-guide/decrypt-advertising-id
-        :param cipher: The cipher as bytes
+        :param cipher: The cipher as a base64 encoded string or bytes
         :param e_key: Encryption key as base64 encoded string or bytes
         :param i_key: Integrity key as base64 encoded string or bytes
-        :return: The advertising id
+        :return: The advertising id bytes
         """
         #  Decode inputs
         cipher = DoubleClickCrypto._decode_base64(cipher)
@@ -114,6 +114,7 @@ class DecryptionTest(unittest.TestCase):
 
     ad_id_e_key = "sIxwz7yw62yrfoLGt12lIHKuYrK_S5kLuApI2BQe7Ac="
     ad_id_i_key = "v3fsVcMBMMHYzRhi7SpM0sdqwzvAxM6KPTu9OtVod5I="
+    ad_id_cipher_base64 = "5nmwvgAM0UABI0VniavN72_tyXf-QJOmQdL0tmh_fduB2go_"
     ad_id_cipher = bytes([
         0xE6, 0x79, 0xB0, 0xBE,
         0x00, 0x0C, 0xD1, 0x40,
@@ -139,6 +140,8 @@ class DecryptionTest(unittest.TestCase):
 
     def test_ad_decryption(self):
         self.assertEqual(DoubleClickCrypto.decrypt_ad_id(self.ad_id_cipher, self.ad_id_e_key, self.ad_id_i_key),
+                         self.ad_id_plain)
+        self.assertEqual(DoubleClickCrypto.decrypt_ad_id(self.ad_id_cipher_base64, self.ad_id_e_key, self.ad_id_i_key),
                          self.ad_id_plain)
 
     def test_timedelta(self):
