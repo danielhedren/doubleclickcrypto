@@ -4,14 +4,20 @@ from datetime import datetime
 from typing import Union
 import unittest
 
+
 class SignatureException(Exception):
     pass
+
 
 class StaleResponseException(Exception):
     pass
 
-class DoubleClickCrypto():
-    def decrypt(enc: Union[str, bytes], e_key: Union[str, bytes], i_key: Union[str, bytes], max_timedelta_seconds: int=None) -> int:
+
+class DoubleClickCrypto:
+    @staticmethod
+    def decrypt(enc: Union[str, bytes], e_key: Union[str, bytes], i_key: Union[str, bytes],
+                max_timedelta_seconds: int = None) -> int:
+
         #  Decode keys if they are passed as strings
         if type(e_key) is str:
             e_key = base64.urlsafe_b64decode(e_key)
@@ -52,23 +58,26 @@ class DoubleClickCrypto():
 
         return price
 
+
 class DecryptionTest(unittest.TestCase):
     e_key = base64.urlsafe_b64decode('skU7Ax_NL5pPAFyKdkfZjZz2-VhIN8bjj1rVFOaJ_5o=')
     i_key = base64.urlsafe_b64decode('arO23ykdNqUQ5LEoQ0FVmPkBd7xB5CO89PDZlSjpFxo=')
-    enc = ["YWJjMTIzZGVmNDU2Z2hpN7fhCuPemCce_6msaw", "YWJjMTIzZGVmNDU2Z2hpN7fhCuPemCAWJRxOgA", "YWJjMTIzZGVmNDU2Z2hpN7fhCuPemC32prpWWw"]
+    enc = ["YWJjMTIzZGVmNDU2Z2hpN7fhCuPemCce_6msaw", "YWJjMTIzZGVmNDU2Z2hpN7fhCuPemCAWJRxOgA",
+           "YWJjMTIzZGVmNDU2Z2hpN7fhCuPemC32prpWWw"]
 
     def test_decryption(self):
         self.assertEqual(DoubleClickCrypto.decrypt(self.enc[0], self.e_key, self.i_key), 100)
         self.assertEqual(DoubleClickCrypto.decrypt(self.enc[1], self.e_key, self.i_key), 1900)
         self.assertEqual(DoubleClickCrypto.decrypt(self.enc[2], self.e_key, self.i_key), 2700)
-    
+
     def test_timedelta(self):
         with self.assertRaises(StaleResponseException):
             DoubleClickCrypto.decrypt(self.enc[0], self.e_key, self.i_key, 0)
-    
+
     def test_invalid(self):
         with self.assertRaises(SignatureException):
             DoubleClickCrypto.decrypt("", self.e_key, self.i_key, 0)
+
 
 if __name__ == '__main__':
     unittest.main()
